@@ -1,0 +1,92 @@
+<resources>
+    <string name="app_name">河长制</string>
+    <string name="title_home">主页</string>
+    <string name="title_xunjian">巡检</string>
+    <string name="title_dashboard">我的巡检</string>
+    <string name="title_notifications">个人中心</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="longstring"> private void initView() {
+    // disable all animations
+    bind.bnve.enableAnimation(false);
+    bind.bnve.enableShiftingMode(false);
+    bind.bnve.enableItemShiftingMode(false);
+
+
+    // add a BadgeView at second icon
+    bind.bnve.post(new Runnable() {
+        @Override
+        public void run() {
+            badgeView1 = addBadgeViewAt(1, "1", BadgeView.SHAPE_OVAL);
+            badgeView3 = addBadgeViewAt(3, "99", BadgeView.SHAPE_OVAL);
+
+            // hide the red circle when click
+            bind.bnve.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    int position = bind.bnve.getMenuItemPosition(item);
+                    switch (position) {
+                        case 1:
+                            toggleBadgeView(badgeView1);
+                            break;
+                        case 3:
+                            toggleBadgeView(badgeView3);
+                            break;
+                    }
+                    return true;
+                }
+            });
+        }
+    });
+
+}
+
+/**
+ * show or hide badgeView
+ * @param badgeView
+ */
+private void toggleBadgeView(BadgeView badgeView) {
+    badgeView.setVisibility(badgeView.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
+}
+
+/**
+ * add a BadgeView on icon at position
+ * @param position add to which icon
+ * @param text the text show on badge
+ * @param shape the badge view shape
+ * @return
+ */
+private BadgeView addBadgeViewAt(int position, String text, int shape) {
+    // get position
+    ImageView icon = bind.bnve.getIconAt(position);
+    int[] pos = new int[2];
+    icon.getLocationInWindow(pos);
+    // action bar height
+    ActionBar actionBar = getSupportActionBar();
+    int actionBarHeight = 0;
+    if (null != actionBar) {
+        actionBarHeight = actionBar.getHeight();
+    }
+    int x = (int) (pos[0] + icon.getMeasuredWidth() * 0.7f);
+    int y = (int) (pos[1] - actionBarHeight - icon.getMeasuredHeight() * 1.25f);
+    // calculate width
+    int width = 16 + 4 * (text.length() - 1);
+    int height = 16;
+
+    BadgeView badgeView = BadgeFactory.create(this)
+            .setTextColor(Color.WHITE)
+            .setWidthAndHeight(width, height)
+            .setBadgeBackground(Color.RED)
+            .setTextSize(10)
+            .setBadgeGravity(Gravity.LEFT | Gravity.TOP)
+            .setBadgeCount(text)
+            .setShape(shape)
+//                .setMargin(0, 0, 0, 0)
+            .bind(this.bind.rlRoot);
+    badgeView.setX(x);
+    badgeView.setY(y);
+    return badgeView;
+}</string>
+    <string name="title_activity_success">SuccessActivity</string>
+</resources>
