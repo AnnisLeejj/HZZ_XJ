@@ -74,7 +74,7 @@ public class ReadyPatroling extends BaseActivity implements BDMapController, Vie
 
     //搜索的自动提示
     private void setAutoCompleteText() {
-        String[] arr = {"好人", "坏人", "坏蛋","大坏蛋"};
+        String[] arr = {"好人", "坏人", "坏蛋","大坏蛋","aa","ab","aab","bba"};
         autoCompleteTextAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arr);
         cotnent_search.setAdapter(autoCompleteTextAdapter);
     }
