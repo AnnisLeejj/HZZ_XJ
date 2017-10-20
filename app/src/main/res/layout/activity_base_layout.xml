@@ -20,13 +20,23 @@
 
             <ImageButton
                 android:id="@+id/navigation_back"
-                android:layout_width="13dp"
-                android:layout_height="32dp"
+                android:layout_width="15dp"
+                android:layout_height="27dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:background="#0000" />
+                android:layout_marginLeft="10dp"
+                android:background="#0000"  />
+
+            <TextView
+                android:id="@+id/title_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:textColor="#fff" />
 
             <TextView
                 android:id="@+id/title"
@@ -39,6 +49,15 @@
                 android:singleLine="true"
                 android:textColor="#fff"
                 android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/title_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:textColor="#fff" />
         </RelativeLayout>
 
         <FrameLayout

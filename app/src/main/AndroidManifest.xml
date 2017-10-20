@@ -48,6 +48,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".UI.Activity.TaskOfPatroling"
+            android:label="@string/title_activity_task_of_patroling"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.Activity.ReadyPatroling"
+            android:label="@string/title_activity_ready_patroling"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Helper.ShipinHelper.SuccessActivity"
             android:label="@string/title_activity_success"
@@ -60,7 +69,6 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="7hA2fdD7EEtF8WG7FhTbbweEizysscfi" />
-
 
         <activity android:name="com.mabeijianxi.smallvideorecord2.MediaRecorderActivity" />
 
@@ -77,6 +85,7 @@
         <service
             android:name=".Service.GetMyLocaltion_IntentService"
             android:exported="false" />
+
     </application>
 
 </manifest>

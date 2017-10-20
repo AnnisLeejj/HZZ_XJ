@@ -59,14 +59,8 @@ import butterknife.Unbinder;
  * Use the {@link FragmentMainSecond#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentMainSecond extends Fragment implements BDMapController {
-    @BindView(R.id.bmapView)
-    MapView bmapView;
-    @BindView(R.id.move_to_mylocaltion)
-    ImageButton move_to_mylocaltion;
-    @BindView(R.id.test_1)
-    ImageButton test_1;
-    BaiduMap baiduMap;//地图控制器
+public class FragmentMainSecond extends Fragment{
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private OnFragmentInteractionListener mListener;
@@ -105,69 +99,7 @@ public class FragmentMainSecond extends Fragment implements BDMapController {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setMyMapView();
-        startService();
-    }
 
-    private void setMyMapView() {
-        baiduMap = bmapView.getMap();
-        bmapView.showScaleControl(false);
-        move_to_mylocaltion.setOnClickListener(view -> moveToMyLocaltion());
-        if (WPConfig.isDebug) {
-            test_1.setOnClickListener(view -> {
-                addMaker(new LatLng(lastLocation.getLatitude() + 0.1, lastLocation.getLongitude() + 0.1), MarkerLevel.Red);
-            });
-        } else {
-            test_1.setVisibility(View.GONE);
-        }
-        LogUtils.w("map", new Gson().toJson(baiduMap.getLocationData()));
-    }
-
-    private void startService() {
-        realLocaltion(1000);//开始定位
-        orientationListener = new MyOrientationListener(getActivity());
-        orientationListener.setOnOrientationListener(new MyOrientationListener.OnOrientationListener() {
-            @Override
-            public void onOrientationChanged(float x) {
-                Direction = x;
-            }
-        });
-        orientationListener.start();
-    }
-
-    MyOrientationListener orientationListener;
-    LocationClient locationClient;
-    float Direction;
-
-    /**
-     * @param interval 定位的间隔时间(毫秒) , 为0 时,只定位一次
-     */
-    private void realLocaltion(int interval) {
-        locationClient = new LocationClient(getActivity());// 实例化location类
-        locationClient.registerLocationListener(new BDLocationListener() {
-            @Override
-            public void onReceiveLocation(BDLocation location) {
-                // mMapView 销毁后不再处理新接收的位置
-                if (location == null || bmapView == null)
-                    return;
-                setLocaltion(location);
-            }
-        });// 注册监听函数
-        LocationClientOption clientOption = new LocationClientOption();
-        // 打开GPS
-        clientOption.setOpenGps(true);
-        // 设置定位模式
-        clientOption.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
-        // 返回的定位结果是百度经纬度，默认gcj02
-        clientOption.setCoorType("bd09ll");
-        // 设置发送定位请求的间隔时间
-        clientOption.setScanSpan(interval);
-        // 返回的定位结果包含地址信息
-        clientOption.setIsNeedAddress(true);
-        // 返回的定位结果包含手机机头的方向
-        clientOption.setNeedDeviceDirect(true);
-        locationClient.setLocOption(clientOption);
-        locationClient.start();
     }
 
     @Override
@@ -181,105 +113,13 @@ public class FragmentMainSecond extends Fragment implements BDMapController {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        LogUtils.w("map", "map onDestroy");
-        //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
-        if (bmapView != null)
-            bmapView.onDestroy();
-        if (locationClient != null && locationClient.isStarted())
-            locationClient.stop();
-        orientationListener.stop();//方位信息
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        LogUtils.w("map", "map onResume");
-        //在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
-        if (bmapView != null)
-            bmapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        LogUtils.w("map", "map onPause");
-        //在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
-        if (bmapView != null)
-            bmapView.onPause();
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
-
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    /**
-     * 开启定位图层
-     *
-     * @param location 定位信息
-     */
-    BDLocation lastLocation;
-
-    private void setLocaltion(BDLocation location) {
-        lastLocation = location;
-        // 开启定位图层
-        baiduMap.setMyLocationEnabled(true);
-        // 构造定位数据
-        MyLocationData locData = new MyLocationData.Builder()
-                .accuracy(location.getRadius())
-                // 此处设置开发者获取到的方向信息，顺时针0-360
-                .direction(Direction)
-                .latitude(location.getLatitude()).longitude(location.getLongitude())
-                .build();
-//        // 设置定位数据
-        baiduMap.setMyLocationData(locData);
-        // 设置定位图层的配置（定位模式，是否允许方向信息，用户自定义定位图标）
-        MyLocationConfiguration config = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, null);
-        //R.drawable.icon_geo //arrow  //BitmapDescriptorFactory  .fromResource(R.drawable.arrow)
-        baiduMap.setMyLocationConfiguration(config);
-        if (moveToMyLocaltion) {
-            // 开始移动百度地图的定位地点到中心位置
-            LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
-            MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(ll, 16.0f);
-            baiduMap.animateMapStatus(u);
-            moveToMyLocaltion = false;
-        }
-    }
-
-    private void closeLocalation() {
-        // 当不需要定位图层时关闭定位图层
-        // baiduMap.setMyLocationEnabled(false);
-    }
-
-    boolean moveToMyLocaltion = true;
-
-    @Override
-    public void moveToMyLocaltion() {
-        // 开始移动百度地图的定位地点到中心位置
-        LatLng ll = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(ll, 16.0f);
-        baiduMap.animateMapStatus(u);
-        moveToMyLocaltion = false;
-    }
-
-    @Override
-    public Marker addMaker(LatLng latLng, MarkerLevel markerLevel) {
-        //根据 markerLevel 准备 marker 的图片
-        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(markerLevel == MarkerLevel.Green ? R.drawable.marker_green : markerLevel == MarkerLevel.Grey ?
-                R.drawable.marker_grey : markerLevel == MarkerLevel.Red ? R.drawable.marker_red : 0);//都不是的话让其报错
-        //准备 marker option 添加 marker 使用
-        MarkerOptions markerOptions = new MarkerOptions().icon(bitmap).position(latLng);
-        //获取添加的 marker 这样便于后续的操作
-        return (Marker) baiduMap.addOverlay(markerOptions);
     }
 }

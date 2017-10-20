@@ -9,25 +9,20 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.heking.hzz.Base.BaseFramentActivity;
-import com.heking.hzz.Base.Constant;
-import com.heking.hzz.Base.MessageEvent;
 import com.heking.hzz.Base.OnFragmentInteractionListener;
 import com.heking.hzz.Base.ToolbarInfo;
 import com.heking.hzz.Helper.BottomNavigationHelper;
 import com.heking.hzz.R;
 import com.heking.hzz.Service.GetMyLocaltion_Service;
-import com.heking.hzz.UI.Fragment.Main.FragmentMainHome;
 import com.heking.hzz.UI.Fragment.Main.FragmentMainPersonal;
 import com.heking.hzz.UI.Fragment.Main.FragmentMainSecond;
-import com.heking.hzz.UI.Fragment.Main.FragmentMainThird;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import com.heking.hzz.UI.Fragment.Main.MainFragment_1;
+import com.heking.hzz.UI.Fragment.Main.MainFragment_3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,33 +38,44 @@ public class MainActivity extends BaseFramentActivity implements OnFragmentInter
     BottomNavigationView navigationView3;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener1
-            = item -> {
+            = (MenuItem item) -> {
         switch (item.getItemId()) {
             case R.id.navigation_home://主页
                 BottomWithFragmentsControler.setIndexSelected(0);
-                showToast("navigation_home");
+                setToolBar(new ToolbarInfo("主页", "巡检资料", "公告", callBack));
                 return true;
             case R.id.navigation_xunjian://巡检
                 BottomWithFragmentsControler.setIndexSelected(1);
-                showToast("navigation_xunjian");
+                setToolBar(new ToolbarInfo("巡检"));
                 return true;
             case R.id.navigation_xunjian_mine:
                 BottomWithFragmentsControler.setIndexSelected(2);
-                showToast("navigation_xunjian_mine");
+                setToolBar(new ToolbarInfo("我的巡检", "", "统计", callBack));
                 return true;
             case R.id.navigation_mine://个人中心
                 BottomWithFragmentsControler.setIndexSelected(3);
-                showToast("navigation_mine");
+                setToolBar(new ToolbarInfo("个人中心"));
                 return true;
         }
         return false;
     };
+    static ToolbarInfo.BaseActivityCallBack callBack = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        callBack = new ToolbarInfo.BaseActivityCallBack() {
+            @Override
+            public void left(String title_left) {
 
+            }
+
+            @Override
+            public void right(String title_rightt) {
+
+            }
+        };
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -86,6 +92,11 @@ public class MainActivity extends BaseFramentActivity implements OnFragmentInter
 //        navigationView3.setSelectedItemId(R.id.navigation_home);
     }
 
+    @Override
+    protected ToolbarInfo getToolBar() {
+        return new ToolbarInfo("主页", "巡检资料", "公告", callBack);
+    }
+
     static class BottomWithFragmentsControler {
         static Fragment mainHome, mainSecond, mainThird, mainPersonal;
         static List<Fragment> fragments;
@@ -99,9 +110,9 @@ public class MainActivity extends BaseFramentActivity implements OnFragmentInter
             currentNavigation = first;
 
             fragments = new ArrayList<>();
-            mainHome = FragmentMainHome.newInstance("FragmentMainHome", "FragmentMainHome");
+            mainHome = MainFragment_1.newInstance("FragmentMainHome", "FragmentMainHome");
             mainSecond = FragmentMainSecond.newInstance("FragmentMainSecond", "FragmentMainSecond");
-            mainThird = FragmentMainThird.newInstance("FragmentMainThird", "FragmentMainThird");
+            mainThird = MainFragment_3.newInstance("FragmentMainThird", "FragmentMainThird");
             mainPersonal = FragmentMainPersonal.newInstance("FragmentMainPersonal", "FragmentMainPersonal");
             fragments.add(mainHome);
             fragments.add(mainSecond);
@@ -127,6 +138,7 @@ public class MainActivity extends BaseFramentActivity implements OnFragmentInter
             if (curentIndex != 10 && curentIndex == index) {
                 return;
             }
+
             ft = fragmentManager.beginTransaction();
             for (int i = 0; i < fragments.size(); i++) {
                 if (!fragments.get(i).isAdded()) {
@@ -145,14 +157,6 @@ public class MainActivity extends BaseFramentActivity implements OnFragmentInter
     protected void onDestroy() {
         super.onDestroy();
 
-    }
-
-
-
-
-    @Override
-    public ToolbarInfo getMyTitle() {
-        return new ToolbarInfo("主页");
     }
 
     @Override

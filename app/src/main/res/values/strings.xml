@@ -89,4 +89,6 @@ private BadgeView addBadgeViewAt(int position, String text, int shape) {
     return badgeView;
 }</string>
     <string name="title_activity_success">SuccessActivity</string>
+    <string name="title_activity_ready_patroling">ReadyPatroling</string>
+    <string name="title_activity_task_of_patroling">TaskOfPatroling</string>
 </resources>

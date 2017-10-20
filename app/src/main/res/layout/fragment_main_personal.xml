@@ -3,11 +3,75 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.heking.hzz.UI.Fragment.Main.FragmentMainPersonal">
-
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/text_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center_horizontal"
         android:text="个人中心" />
+
+    <Button
+        android:id="@+id/htpp_requet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:text="网络请求" />
+
+    <Button
+        android:id="@+id/htpp_requet2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp"
+        android:text="网络请求2" />
+
+    <Button
+        android:id="@+id/htpp_requet3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="130dp"
+        android:text="网络请求3" />
+
+    <Button
+        android:id="@+id/htpp_requet4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="180dp"
+        android:text="获取定位IntentService" />
+
+    <Button
+        android:id="@+id/htpp_requet5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="230dp"
+        android:text="获取定位Service 绑定" />
+
+    <Button
+        android:id="@+id/htpp_requet6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="280dp"
+        android:text="获取定位Service 解绑" />
+
+    <Button
+        android:id="@+id/htpp_requet7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="330dp"
+        android:text="视频录制" />
+
+    <Button
+        android:id="@+id/htpp_requet8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="380dp"
+        android:text="本地视频" />
 
 </FrameLayout>

@@ -29,6 +29,10 @@ public abstract class BaseFramentActivity extends FragmentActivity {
     private View view;
     @BindView(R.id.title)
     TextView tv_title;
+    @BindView(R.id.title_left)
+    TextView tv_title_left;
+    @BindView(R.id.title_right)
+    TextView tv_title_right;
     @BindView(R.id.base_activity_toolbar)
     public RelativeLayout myToolbar;
     @BindView(R.id.fab)
@@ -51,6 +55,7 @@ public abstract class BaseFramentActivity extends FragmentActivity {
         viewGroup.addView(view1);
         initBase(view);
     }
+
     /**
      * BaseActivity 的 界面加载完了,在这里加载继承者的界面
      *
@@ -61,27 +66,39 @@ public abstract class BaseFramentActivity extends FragmentActivity {
         ButterKnife.bind(this); //注解
         // toolbar = view.findViewById(R.id.base_activity_toolbar);
         //setSupportActionBar(toolbar);
-        setToolBar();
+        setToolBar(getToolBar());
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         initView();
     }
 
-    public void setToolBar() {
-        if (getMyTitle() == null) {
+    public void setToolBar(ToolbarInfo toolbarInfo) {
+        if (toolbarInfo == null) {
             myToolbar.setVisibility(View.GONE);
         } else {
-            tv_title.setText(getMyTitle().title);
-            navigation_back.setVisibility(getMyTitle().havBack ? View.VISIBLE : View.GONE);
-            if (getMyTitle().havBack) {
+            tv_title.setText(toolbarInfo.title);
+            tv_title_left.setText(toolbarInfo.title_left);
+            tv_title_right.setText(toolbarInfo.title_right);
+            navigation_back.setVisibility(toolbarInfo.havBack ? View.VISIBLE : View.GONE);
+
+            if (toolbarInfo.havBack) {
                 navigation_back.setBackgroundResource(R.drawable.back);
                 navigation_back.setOnClickListener(v -> finish());
+            }
+            if (toolbarInfo.callBack != null) {
+                tv_title_left.setOnClickListener(view -> {
+                    toolbarInfo.callBack.left(tv_title_left.getText().toString());
+                });
+                tv_title_right.setOnClickListener(view -> {
+                    toolbarInfo.callBack.right(tv_title_right.getText().toString());
+                });
             }
         }
     }
 
     protected abstract void initView();
 
-    protected abstract ToolbarInfo getMyTitle();
+    protected abstract ToolbarInfo getToolBar();
+
     // Activity 常用
     @SuppressLint("ResourceType")
     public void useFat(@NonNull final String message, @IntegerRes int imageResource, @Nullable final View.OnClickListener listener) {
@@ -104,8 +121,10 @@ public abstract class BaseFramentActivity extends FragmentActivity {
     public void showSnackbar(@NonNull String message, String ActionMessage, View.OnClickListener actionListener) {
         Snackbar.make(view, message, Snackbar.LENGTH_LONG).setAction("Action", actionListener).show();
     }
+
     /**
      * onDestroyView中进行解绑操作
      */
+
 
 }

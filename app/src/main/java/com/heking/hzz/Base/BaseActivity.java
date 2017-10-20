@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.heking.hzz.Helper.LogUtils.LogUtils;
 import com.heking.hzz.R;
 
 import butterknife.BindView;
@@ -33,6 +34,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     private View view;
     @BindView(R.id.title)
     TextView tv_title;
+    @BindView(R.id.title_left)
+    TextView tv_title_left;
+    @BindView(R.id.title_right)
+    TextView tv_title_right;
     @BindView(R.id.base_activity_toolbar)
     public RelativeLayout myToolbar;
     @BindView(R.id.fab)
@@ -83,20 +88,31 @@ public abstract class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(this); //注解
         // toolbar = view.findViewById(R.id.base_activity_toolbar);
         //setSupportActionBar(toolbar);
-        setToolBar();
+        setToolBar(getMyTitle());
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         initView();
     }
 
-    public void setToolBar() {
-        if (getMyTitle() == null) {
+    public void setToolBar(ToolbarInfo toolbarInfo) {
+        if (toolbarInfo == null) {
             myToolbar.setVisibility(View.GONE);
         } else {
-            tv_title.setText(getMyTitle().title);
-            navigation_back.setVisibility(getMyTitle().havBack ? View.VISIBLE : View.GONE);
-            if (getMyTitle().havBack) {
+            tv_title.setText(toolbarInfo.title);
+            tv_title_left.setText(toolbarInfo.title_left);
+            tv_title_right.setText(toolbarInfo.title_right);
+            navigation_back.setVisibility(toolbarInfo.havBack ? View.VISIBLE : View.GONE);
+
+            if (toolbarInfo.havBack) {
                 navigation_back.setBackgroundResource(R.drawable.back);
                 navigation_back.setOnClickListener(v -> finish());
+            }
+            if (toolbarInfo.callBack != null) {
+                tv_title_left.setOnClickListener(view -> {
+                    toolbarInfo.callBack.left(tv_title_left.getText().toString());
+                });
+                tv_title_right.setOnClickListener(view -> {
+                    toolbarInfo.callBack.right(tv_title_right.getText().toString());
+                });
             }
         }
     }

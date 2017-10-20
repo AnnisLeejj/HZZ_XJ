@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.heking.hzz.UI.Fragment.Main.MainFragment_1">
+
+    <com.youth.banner.Banner xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text"
+        android:background="#aaa"
+        app:indicator_drawable_selected="@mipmap/point"
+        app:indicator_height="8dp"
+        app:indicator_margin="5dp"
+        app:indicator_width="8dp"
+        app:title_background="#4000"
+        app:title_height="35dp"
+        app:title_textcolor="@android:color/white"
+        app:title_textsize="16sp" />
+
+    <Button
+        android:id="@+id/bt_readey_patroling"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:text="开始巡检" />
+</RelativeLayout>
